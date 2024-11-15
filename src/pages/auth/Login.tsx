@@ -20,7 +20,7 @@ const LoginUser: React.FC = () => {
                 const role = 'user';
                 setAuthData(token, role);
 
-                navigate('/dashboard/user');
+                navigate('/dashboard/students');
             }
         } catch (error) {
             setError('Login failed. Please check your credentials and try again.');
