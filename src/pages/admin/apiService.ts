@@ -30,3 +30,13 @@ export const fetchRoles = async (): Promise<Role[]> => {
   const response = await axios.get("/api/roles");
   return response.data;
 };
+
+export const createUser = async (data: {
+  name: string;
+  email: string;
+  password: string;
+  roleId: string;
+}) => {
+  const response = await axios.post("/api/users", data);
+  return response.data;
+};

@@ -47,9 +47,10 @@ export function DataTable<TData, TValue>({
     const [rowSelection, setRowSelection] = React.useState({})
     const [isModalVisible, setModalVisible] = React.useState(false)
 
-    const handleAddUser = (user: { name: string; email: string; roleId: string }) => {
-        console.log('User added:', user);
+    const handleAddUser = () => {
+        console.log('User added.');
         setModalVisible(false);
+        // Optionally refresh the table data here
     };
 
     const handleCancel = () => {
