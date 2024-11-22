@@ -1,12 +1,12 @@
 import axios from "axios";
 import { userTable } from "./collum";
 
-type Role = {
+export type Role = {
   id: string;
   name: string;
 };
 
-type User = {
+export type User = {
   id: string;
   name: string;
   email: string;
@@ -24,4 +24,9 @@ export const fetchUserData = async (): Promise<userTable[]> => {
       ? user.roles.map((role: Role) => role.name).join(", ")
       : null,
   }));
+};
+
+export const fetchRoles = async (): Promise<Role[]> => {
+  const response = await axios.get("/api/roles");
+  return response.data;
 };
