@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { DataTable } from './data-table'; 
-import { columns, userTable } from './collum'; 
-import { fetchUserData } from './apiService'; 
-
+import { DataTable } from './data-table';
+import { columns, userTable } from './collum';
+import { fetchUserData } from './apiService';
 
 const DashboardAdmin = () => {
   const [data, setData] = useState<userTable[]>([]);
@@ -24,10 +23,10 @@ const DashboardAdmin = () => {
   }, []);
 
   return (
-    <div className='px-5'>
-      <div>
+    <div className="bg-background text-foreground px-5">
+      <h1 className='text-lg my-5 mx-2'>
         Welcome to Admin Dashboard
-      </div>
+      </h1>
       {loading ? (
         <div>Loading...</div>
       ) : (

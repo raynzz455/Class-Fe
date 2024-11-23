@@ -29,8 +29,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
-import Modal from './Modal'; // Pastikan path ini sesuai
-import AddUserForm from './AddUserForm'; // Pastikan path ini sesuai
+import Modal from './Modal'; 
+import AddUserForm from './AddUserForm'; 
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
@@ -50,7 +50,6 @@ export function DataTable<TData, TValue>({
     const handleAddUser = () => {
         console.log('User added.');
         setModalVisible(false);
-        // Optionally refresh the table data here
     };
 
     const handleCancel = () => {

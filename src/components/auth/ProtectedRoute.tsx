@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import useAuthProtection from '../hooks/useAuthProtection';
+import useAuthProtection from '../../hooks/useAuthProtection';
 
 interface ProtectedRouteProps {
     children: ReactNode;

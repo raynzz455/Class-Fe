@@ -15,7 +15,6 @@ export type User = {
 
 export const fetchUserData = async (): Promise<userTable[]> => {
   const response = await axios.get("/api/users");
-
   return response.data.map((user: User) => ({
     id: user.id,
     name: user.name,
