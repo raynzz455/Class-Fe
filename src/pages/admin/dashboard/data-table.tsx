@@ -78,16 +78,13 @@ export function DataTable<TData, TValue>({
     return (
         <div className="rounded-md border px-5">
             <div className="flex items-center py-4">
-                <Button variant="default" onClick={() => setModalVisible(true)}>
-                    Add New User
-                </Button>
                 <Input
                     placeholder="Filter emails..."
                     value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("email")?.setFilterValue(event.target.value)
                     }
-                    className="max-w-sm ml-4"
+                    className="max-w-sm mr-auto"
                 />
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -115,6 +112,9 @@ export function DataTable<TData, TValue>({
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
+                <Button variant="default" onClick={() => setModalVisible(true)} className="ml-5">
+                    Add New User
+                </Button>
             </div>
             <Modal isVisible={isModalVisible} title="Add New User" onClose={handleCancel}>
                 <AddUserForm onSubmit={handleAddUser} onCancel={handleCancel} />

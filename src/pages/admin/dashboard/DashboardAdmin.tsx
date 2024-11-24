@@ -23,7 +23,7 @@ const DashboardAdmin = () => {
   }, []);
 
   return (
-    <div className="bg-background text-foreground px-5">
+    <div className="text-foreground px-5">
       <h1 className='text-lg my-5 mx-2'>
         Welcome to Admin Dashboard
       </h1>

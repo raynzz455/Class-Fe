@@ -3,13 +3,11 @@ import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import Layout from './layout/Layout';
 import LoginAdmin from './pages/auth/LoginAdmin';
 import LoginUser from './pages/auth/Login';
-import DashboardAdmin from './pages/admin/DashboardAdmin';
+import DashboardAdmin from './pages/admin/dashboard/DashboardAdmin';
 import DashboardUser from './pages/students/DashboardStudents';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ProtectedRouteAdmin from './components/auth/AdminRouteProtect';
 import { AuthProvider } from './context/AuthContext';
-import { ThemeProvider } from "@/components/theme-provider";
-import { ModeToggle } from "./components/mode-toggle";
 import { AdminSidebar } from '@/components/admin-sidebar';
 import StudentSidebar from '@/components/student-sidebar';
 
@@ -17,7 +15,6 @@ import './App.css';
 
 function App() {
   return (
-    <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
       <AuthProvider>
         
           <Router>
@@ -27,7 +24,6 @@ function App() {
               <Route
                 path="/dashboard/admin"
                 element={
-                  <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
                   <SidebarProvider>
                   <ProtectedRoute> {/* using auth route */}
                   <ProtectedRouteAdmin>
@@ -35,14 +31,12 @@ function App() {
                     <div className="w-full">
                       <div className="p-5 flex justify-between">
                         <SidebarTrigger />
-                        <ModeToggle />
                       </div>
                       <DashboardAdmin />
                     </div>
                     </ProtectedRouteAdmin>
                   </ProtectedRoute>
                   </SidebarProvider>
-                  </ThemeProvider>
                 }
               />
 
@@ -61,7 +55,6 @@ function App() {
           </Router>
         
       </AuthProvider>
-    </ThemeProvider>
   );
 }
 
