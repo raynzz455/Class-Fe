@@ -10,7 +10,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-
+import { deleteUser } from "./apiService";
 export type userTable = {
   id: string;
   name: string;
@@ -76,6 +76,12 @@ export const columns: ColumnDef<userTable>[] = [
     header: "Actions",
     cell: ({ row, table }) => {
       const user = row.original;
+      const handleDeleteUser = async () => {
+        try {
+          await deleteUser(user.id);
+          table.setData(old => old.filter(item => item.id !== user.id));
+        } catch (error) { console.error('Failed to delete user:', error); }
+      };
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -94,7 +100,7 @@ export const columns: ColumnDef<userTable>[] = [
             <DropdownMenuItem onClick={() => table.options.meta?.openUpdateModal(user)}>
               Update user
             </DropdownMenuItem>
-            <DropdownMenuItem>Delete user</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleDeleteUser}>Delete user</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       );

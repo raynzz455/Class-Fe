@@ -31,7 +31,8 @@ import {
 import { Input } from "@/components/ui/input";
 import Modal from './Modal'; 
 import AddUserForm from './AddUserForm'; 
-import UpdateUserForm from './UpdateUserForm'; 
+import UpdateUserForm from './UpdateUserForm'; // Import UpdateUserForm
+import { columns as columnDefs } from './collum'; // Import columns
 
 interface userTable {
     id: string;
@@ -56,6 +57,7 @@ export function DataTable<TData extends userTable, TValue>({
     const [isAddModalVisible, setAddModalVisible] = React.useState(false);
     const [isUpdateModalVisible, setUpdateModalVisible] = React.useState(false);
     const [selectedUser, setSelectedUser] = React.useState<userTable | null>(null);
+    const [tableData, setTableData] = React.useState(data); // State for table data
 
     const handleAddUser = () => {
         console.log('User added.');
@@ -82,8 +84,8 @@ export function DataTable<TData extends userTable, TValue>({
     };
 
     const table = useReactTable({
-        data,
-        columns,
+        data: tableData, // Use tableData state
+        columns: columnDefs,
         getCoreRowModel: getCoreRowModel(),
         getPaginationRowModel: getPaginationRowModel(),
         onSortingChange: setSorting,
@@ -99,9 +101,11 @@ export function DataTable<TData extends userTable, TValue>({
             rowSelection
         },
         meta: {
-            openUpdateModal, 
+            openUpdateModal, // Pastikan fungsi ini ada di meta
+            setTableData // Pastikan setTableData juga ada di meta
         },
     });
+    
 
     return (
         <div className="rounded-md border px-5">
