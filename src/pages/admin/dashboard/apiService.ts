@@ -39,3 +39,20 @@ export const createUser = async (data: {
   const response = await axios.post("/api/users", data);
   return response.data;
 };
+
+export const updateUser = async (
+  id: string,
+  data: {
+    name: string;
+    email: string;
+    roleId: string;
+  }
+) => {
+  const response = await axios.put(`/api/users/${id}`, data);
+  return response.data;
+};
+
+export const deleteUser = async (id: string) => {
+  const response = await axios.delete(`/api/users/${id}`);
+  return response.data;
+};

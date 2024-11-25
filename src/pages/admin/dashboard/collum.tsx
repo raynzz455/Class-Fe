@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { ColumnDef } from "@tanstack/react-table";
 import { MoreHorizontal, ArrowUpDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -11,8 +10,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import AddUserForm from "./AddUserForm";
-import Modal from './Modal';
 
 export type userTable = {
   id: string;
@@ -71,29 +68,14 @@ export const columns: ColumnDef<userTable>[] = [
     header: "User Roles",
     cell: ({ row }) => {
       const roles = row.getValue<string | null>("roles");
-      if (roles) {
-        return <span>{roles}</span>;
-      } else {
-        return <span className="text-red-500">NULL</span>;
-      }
+      return roles ? <span>{roles}</span> : <span className="text-red-500">NULL</span>;
     },
   },
   {
     id: "actions",
     header: "Actions",
-    cell: ({ row }) => {
+    cell: ({ row, table }) => {
       const user = row.original;
-      const [isModalVisible, setModalVisible] = useState(false);
-
-      const handleAddUser = () => {
-        console.log('User added.');
-        setModalVisible(false);
-      };
-
-      const handleCancel = () => {
-        setModalVisible(false);
-      };
-
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -104,21 +86,16 @@ export const columns: ColumnDef<userTable>[] = [
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(user.id)}
-            >
+            <DropdownMenuItem onClick={() => navigator.clipboard.writeText(user.id)}>
               Copy user ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem>View user details</DropdownMenuItem>
-            <DropdownMenuItem onSelect={() => setModalVisible(true)}>
+            <DropdownMenuItem onClick={() => table.options.meta?.openUpdateModal(user)}>
               Update user
             </DropdownMenuItem>
             <DropdownMenuItem>Delete user</DropdownMenuItem>
           </DropdownMenuContent>
-          <Modal isVisible={isModalVisible} title="Update User" onClose={handleCancel}>
-            <AddUserForm onSubmit={handleAddUser} onCancel={handleCancel} />
-          </Modal>
         </DropdownMenu>
       );
     },

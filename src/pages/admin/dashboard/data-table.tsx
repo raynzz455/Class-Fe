@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,7 +10,7 @@ import {
     getSortedRowModel,
     getFilteredRowModel,
     useReactTable,
-} from "@tanstack/react-table"
+} from "@tanstack/react-table";
 
 import {
     Table,
@@ -19,41 +19,66 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import Modal from './Modal'; 
 import AddUserForm from './AddUserForm'; 
+import UpdateUserForm from './UpdateUserForm'; 
 
-interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[]
-    data: TData[]
+interface userTable {
+    id: string;
+    name: string;
+    email: string;
+    roles: string | null;
 }
 
-export function DataTable<TData, TValue>({
+interface DataTableProps<TData extends userTable, TValue> {
+    columns: ColumnDef<TData, TValue>[];
+    data: TData[];
+}
+
+export function DataTable<TData extends userTable, TValue>({
     columns,
     data,
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([])
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
-    const [isModalVisible, setModalVisible] = React.useState(false)
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = React.useState({});
+    const [isAddModalVisible, setAddModalVisible] = React.useState(false);
+    const [isUpdateModalVisible, setUpdateModalVisible] = React.useState(false);
+    const [selectedUser, setSelectedUser] = React.useState<userTable | null>(null);
 
     const handleAddUser = () => {
         console.log('User added.');
-        setModalVisible(false);
+        setAddModalVisible(false);
     };
 
-    const handleCancel = () => {
-        setModalVisible(false);
+    const handleCancelAdd = () => {
+        setAddModalVisible(false);
+    };
+
+    const handleUpdateUser = (updatedUser: userTable) => {
+        console.log('User updated', updatedUser);
+        setUpdateModalVisible(false);
+        // Lakukan logika update data di sini
+    };
+
+    const handleCancelUpdate = () => {
+        setUpdateModalVisible(false);
+    };
+
+    const openUpdateModal = (user: userTable) => {
+        setSelectedUser(user);
+        setUpdateModalVisible(true);
     };
 
     const table = useReactTable({
@@ -73,7 +98,10 @@ export function DataTable<TData, TValue>({
             columnVisibility,
             rowSelection
         },
-    })
+        meta: {
+            openUpdateModal, 
+        },
+    });
 
     return (
         <div className="rounded-md border px-5">
@@ -81,9 +109,7 @@ export function DataTable<TData, TValue>({
                 <Input
                     placeholder="Filter emails..."
                     value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
-                    }
+                    onChange={(event) => table.getColumn("email")?.setFilterValue(event.target.value)}
                     className="max-w-sm mr-auto"
                 />
                 <DropdownMenu>
@@ -108,16 +134,16 @@ export function DataTable<TData, TValue>({
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Button variant="default" onClick={() => setModalVisible(true)} className="ml-5">
+                <Button variant="default" onClick={() => setAddModalVisible(true)} className="ml-5">
                     Add New User
                 </Button>
             </div>
-            <Modal isVisible={isModalVisible} title="Add New User" onClose={handleCancel}>
-                <AddUserForm onSubmit={handleAddUser} onCancel={handleCancel} />
+            <Modal isVisible={isAddModalVisible} title="Add New User" onClose={handleCancelAdd}>
+                <AddUserForm onSubmit={handleAddUser} onCancel={handleCancelAdd} />
             </Modal>
             <Table className="border">
                 <TableHeader>
@@ -133,7 +159,7 @@ export function DataTable<TData, TValue>({
                                                 header.getContext()
                                             )}
                                     </TableHead>
-                                )
+                                );
                             })}
                         </TableRow>
                     ))}
@@ -179,6 +205,13 @@ export function DataTable<TData, TValue>({
                     Next
                 </Button>
             </div>
+            {selectedUser && (
+                <Modal isVisible={isUpdateModalVisible} title="Update User" onClose={handleCancelUpdate}>
+                    <UpdateUserForm user={selectedUser} onSubmit={handleUpdateUser} onCancel={handleCancelUpdate} />
+                </Modal>
+            )}
         </div>
-    )
+    );
 }
+
+export default DataTable;
